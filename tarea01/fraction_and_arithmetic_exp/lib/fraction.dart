@@ -17,29 +17,64 @@ class Fraction {
 
   /// Conversion from double to fraction
   Fraction.fromDouble(double value, {this.precision = 4}) {
+    Fraction temp = doubleToFraction(value.toString());
+    numerator = temp.numerator;
+    denominator = temp.denominator;
+    simplify();
+  }
+
+  /// Conversion from double to fraction
+  Fraction doubleToFraction(String value) {
+    int n,d;
     final parts = value.toString().split('.');
     final decimals = parts.length > 1 ? parts[1] : '';
     final multiplier = math.pow(10, decimals.length).toInt();
-    numerator = (value * multiplier).toInt();
-    denominator = multiplier;
-    simplify();
+    n = (num.parse(value) * multiplier).toInt();
+    d = multiplier;
+    return Fraction(n,d);
   }
 
-  /// Conversión desde String a fracción
+  /// Conversion from String to fracction
   Fraction.fromString(String value, {this.precision = 4}) {
     final parts = value.split('/');
-    if (parts.length != 2) {
-      throw FractionException('String does not represent a valid fraction: $value');
+    if (parts.length == 1) {
+      if (parts[0].contains('.')) {
+        Fraction n = doubleToFraction(parts[0]);
+        Fraction d = Fraction(1, 1);
+        Fraction temp = n / d;
+        numerator = temp.numerator;
+        denominator = temp.denominator;
+      } else {
+        numerator = num.parse(parts[0]).toInt();
+        denominator = 1;
+      }
+    } else if (parts.length == 2){
+      Fraction n;
+      Fraction d;
+      if (parts[0].contains('.')) {
+        n = doubleToFraction(parts[0]);
+      } else {
+        n = Fraction(num.parse(parts[0]).toInt(),1);
+      }
+      if(parts[1].contains('.')) {
+        d = doubleToFraction(parts[1]);
+      } else {
+        d = Fraction(num.parse(parts[1]).toInt(),1);
+      }
+      Fraction temp = n / d;
+      numerator = temp.numerator;
+      denominator = temp.denominator;
     }
-    numerator = int.parse(parts[0]);
-    denominator = int.parse(parts[1]);
+    else {
+      throw FormatException('String format incorrect. Unable to convert to Fraction');
+    }
     if (denominator == 0) {
-      throw FractionException("Denominator cannot be zero");
+      throw ArgumentError("Illegal denominator, cannot be zero");
     }
     simplify();
   }
 
-  /// Conversión desde Json a fracción
+  /// Conversion from Json to fracction
   Fraction.fromJson(Map<String, dynamic> json, {this.precision = 4}) {
     if (!json.containsKey('numerator') || !json.containsKey('denominator')) {
       throw const FormatException('JSON object does not contain required fields.');
@@ -162,7 +197,7 @@ class Fraction {
   /// Conversion from Fraction to String
   @override
   String toString() {
-    return "$numerator/$denominator";
+    return "[$numerator/$denominator]";
   }
 }
 
