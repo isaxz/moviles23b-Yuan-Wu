@@ -1,4 +1,3 @@
-
 import 'package:fraction_and_arithmetic_exp/fraction.dart';
 
 class TreeNode {
@@ -13,12 +12,15 @@ class TreeNode {
   String preOrderTraversal() {
     String result = '';
     result += value; // Visit actual node
-
+    result += ' ';
+    
     if (left != null) {
+      result+='L';
       result += left!.preOrderTraversal(); // Traverse the left subtree
     }
 
     if (right != null) {
+      result+='R';
       result += right!.preOrderTraversal(); // Traverse the right subtree
     }
 
@@ -229,8 +231,12 @@ Fraction evaluateExpression(TreeNode? node) {
 /// Evaluate a mathematical expression and return the result as a num.
 num evaluateMathExpression(String expression) {
   List<String> tokens = createExpressionTokens(expression);
+  print("tokens: $tokens");
   List<String> rpnTokens = orderByPrecedence(tokens);
+  print("tokens: $rpnTokens");
   TreeNode root = buildExpressionTree(rpnTokens);
+  print('root: ${root.value}');
+  print('preorder: ${root.preOrderTraversal()}');
   return evaluateExpression(root).toNum();
 }
 
