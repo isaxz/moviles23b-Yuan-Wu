@@ -12,7 +12,8 @@ class HomeScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => ProfessorCubit(),),
-        BlocProvider(create: (context) => CourseCubit(),)
+        BlocProvider(create: (context) => CourseCubit(),),
+        BlocProvider(create: (context) => StudentCubit())
       ],
       child: const _HomeScreen(),
     );
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<_HomeScreen> {
         children: const [
           CourseListView(),
           ProfessorsListView(),
-          Center(child: Text('estudiantes'),),
+          StudentListView(),
         ],
         onPageChanged: (value) {
           setState(() {

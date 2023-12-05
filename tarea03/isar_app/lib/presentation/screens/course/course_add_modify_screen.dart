@@ -38,13 +38,21 @@ class _CourseAddModifyScreenState extends State<_CourseAddModifyScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.id != null) {}
+    if (widget.id != null) {
+      context.read<CourseCubit>().getCourse(widget.id!);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final code = context.watch<CourseCubit>().state.code;
+    final name = context.watch<CourseCubit>().state.name;
+    
     return Scaffold(
-      appBar: AppBar(title: const Text('Agregar curso')),
+      appBar: AppBar(
+            title: (widget.id == null)
+                ? const Text('Agregar curso')
+                : Text('$code $name')),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -123,6 +131,7 @@ class _CourseFormViewState extends State<_CourseFormView> {
 
   @override
   Widget build(BuildContext context) {
+    final courseCubit = context.watch<CourseCubit>();
     final colors = Theme.of(context).colorScheme;
     final List<Professor> professors = context.watch<ProfessorCubit>()
       .state.professors;
@@ -135,6 +144,13 @@ class _CourseFormViewState extends State<_CourseFormView> {
         value: index,
         label: '${professors[index].firstName} ${professors[index].lastName}'
       ));
+    }
+
+    if (widget.id != null) {
+      String code = context.read<CourseCubit>().state.code;
+      String name = context.read<CourseCubit>().state.name;
+      _codeController.text = code;
+      _nameController.text = name;
     }
 
     final border = OutlineInputBorder(
@@ -210,7 +226,8 @@ class _CourseFormViewState extends State<_CourseFormView> {
                     ..code = _codeController.text
                     ..name = _nameController.text
                     ..professor.value = professors[professorSelected!];
-                    context.read<CourseCubit>().addCourse(course);
+                    if (widget.id != null) course.id = widget.id;
+                    courseCubit.addCourse(course);
                     _clearForm();
                     context.pop();
                   }

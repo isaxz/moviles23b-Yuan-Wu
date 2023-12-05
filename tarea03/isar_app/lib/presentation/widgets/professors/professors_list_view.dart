@@ -44,7 +44,7 @@ class _ProfessorsListViewState extends State<ProfessorsListView> {
           child: ListView.builder(
             itemCount: professors.length,
             itemBuilder: (context, index) {
-              return CustomeCard(
+              return CustomCard(
                 title: '${professors[index].firstName} '
                   '${professors[index].lastName}',
                 elevation: 2,

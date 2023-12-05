@@ -13,7 +13,7 @@ class IsarService {
     if(Isar.instanceNames.isEmpty) {
       final dir = await getApplicationDocumentsDirectory();
       return await Isar.open(
-        [ProfessorSchema, CourseSchema], 
+        [ProfessorSchema, CourseSchema, StudentSchema], 
         directory: dir.path
       );
     }
@@ -55,5 +55,42 @@ class IsarService {
   Future<List<Course>> getCourses() async {
     final isar = await db;
     return await isar.courses.where().findAll();
+  }
+
+  Future<Course?> getCourse(int id) async {
+    final isar = await db;
+    return await isar.courses.get(id);
+  }
+
+  void deleteCourse(int id) async {
+    final isar = await db;
+    await isar.writeTxn(() async {
+      await isar.courses.delete(id);
+    });
+  }
+
+  Future<void> addStudent(Student student) async {
+    final isar = await db;
+    await isar.writeTxn(() async {
+      await isar.students.put(student);
+      await student.courses.save();
+    });
+  }
+
+  Future<List<Student>> getStudents() async {
+    final isar = await db;
+    return await isar.students.where().findAll();
+  }
+
+  Future<Student?> getStudent(int id) async {
+    final isar = await db;
+    return await isar.students.get(id);
+  }
+
+  void deleteStudent(int id) async {
+    final isar = await db;
+    await isar.writeTxn(() async {
+      await isar.students.delete(id);
+    });
   }
 }

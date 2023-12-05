@@ -6,6 +6,7 @@ import 'package:isar_app/infrastructure/database/isar_service.dart';
 part 'course_state.dart';
 
 class CourseCubit extends Cubit<CourseState> {
+
   final isarService = IsarService();
 
   CourseCubit() : super(const CourseState());
@@ -21,5 +22,21 @@ class CourseCubit extends Cubit<CourseState> {
         courses: courses,
       )
     );
+  }
+
+  Future<void> getCourse(int id) async {
+    Course? course = await isarService.getCourse(id);
+    if (course == null) return;
+    emit(state.copyWith(
+      id: course.id, 
+      code: course.code, 
+      name: course.name,
+      professorFirstName: course.professor.value?.firstName,
+      professorLastName: course.professor.value?.lastName,
+    ));
+  }
+
+  Future<void> deleteCourse(int id) async {
+    isarService.deleteCourse(id);
   }
 }

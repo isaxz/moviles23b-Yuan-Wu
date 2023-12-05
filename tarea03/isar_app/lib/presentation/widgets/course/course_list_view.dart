@@ -30,7 +30,7 @@ class _CourseListViewState extends State<CourseListView> {
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Row(
             children: [
-              Text('Lista de cursos',
+              Text('Lista de cursos (${courses.length})',
                 style: TextStyle(
                   fontSize: 22,
                   color: colors.primary,
@@ -44,13 +44,33 @@ class _CourseListViewState extends State<CourseListView> {
           child: ListView.builder(
             itemCount: courses.length,
             itemBuilder: (context, index) {
-              return CustomeCard(
+              return CustomCard(
                 title: '${courses[index].code} '
                   '${courses[index].name}',
                 elevation: 2,
-                onPressedDelete: () {},
-                onPressedEdit: () {},
-                onPressedView: () {},
+                onPressedDelete: () {
+                  context
+                  .read<CourseCubit>()
+                  .deleteCourse(courses[index].id!)
+                  .then(
+                    (value) => Future.delayed(
+                      const Duration(milliseconds: 250),
+                      () => context.read<CourseCubit>().getCourses(),
+                    ),
+                  );
+                },
+                onPressedEdit: () {
+                  context.push('/modify-course/${courses[index].id}')
+                  .then(
+                    (value) => Future.delayed(
+                      const Duration(milliseconds: 250),
+                      () => context.read<CourseCubit>().getCourses(),
+                    ),
+                  );
+                },
+                onPressedView: () {
+                  context.push('/course/${courses[index].id}');
+                },
               );
             },
           ),

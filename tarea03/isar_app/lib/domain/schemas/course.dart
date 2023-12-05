@@ -1,5 +1,6 @@
 import 'package:isar/isar.dart';
 import 'package:isar_app/domain/schemas/professor.dart';
+import 'package:isar_app/domain/schemas/student.dart';
 
 part 'course.g.dart';
 
@@ -13,4 +14,7 @@ class Course {
   String? name;
 
   final professor = IsarLink<Professor>();
+
+  @Backlink(to: 'courses')
+  final students = IsarLinks<Student>();
 }

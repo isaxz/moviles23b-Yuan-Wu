@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomeCard extends StatelessWidget {
+class CustomCard extends StatelessWidget {
 
   final double? elevation;
   final String? title;
@@ -8,7 +8,7 @@ class CustomeCard extends StatelessWidget {
   final void Function()? onPressedEdit;
   final void Function()? onPressedView;
 
-  const CustomeCard({
+  const CustomCard({
     super.key,
     this.elevation,
     this.title,
