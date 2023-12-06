@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "430143434791",
+    "project_id": "authtutprial03",
+    "storage_bucket": "authtutprial03.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430143434791:android:f31be3b9b8a0663b931e02",
+        "android_client_info": {
+          "package_name": "com.example.firebase_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA1Mdy5XrLponK2UZ53HEvAt6mhytrEFw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
